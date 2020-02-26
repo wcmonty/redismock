@@ -18,6 +18,15 @@ func (m *ClientMock) XAdd(a *redis.XAddArgs) *redis.StringCmd {
 	return m.Called(a).Get(0).(*redis.StringCmd)
 }
 
+func (m *ClientMock) XInfoGroups(key string) *redis.XInfoGroupsCmd {
+	if !m.hasStub("XInfoGroups") {
+		return m.client.XInfoGroups(key)
+	}
+
+	return m.Called(key).Get(0).(*redis.XInfoGroupsCmd)
+}
+
+
 func (m *ClientMock) XLen(stream string) *redis.IntCmd {
 	if !m.hasStub("XLen") {
 		return m.client.XLen(stream)

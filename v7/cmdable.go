@@ -322,6 +322,15 @@ func (m *ClientMock) BitCount(key string, bitCount *redis.BitCount) *redis.IntCm
 	return m.Called(key, bitCount).Get(0).(*redis.IntCmd)
 }
 
+func (m *ClientMock) BitField(key string, args ...interface{}) *redis.IntSliceCmd {
+	if !m.hasStub("BitCount") {
+		return m.client.BitField(key, args)
+	}
+
+	return m.Called(key, args).Get(0).(*redis.IntSliceCmd)
+}
+
+
 func (m *ClientMock) BitOpAnd(destKey string, keys ...string) *redis.IntCmd {
 	if !m.hasStub("BitOpAnd") {
 		return m.client.BitOpAnd(destKey, keys...)
@@ -586,12 +595,12 @@ func (m *ClientMock) LPush(key string, values ...interface{}) *redis.IntCmd {
 	return m.Called(key, values).Get(0).(*redis.IntCmd)
 }
 
-func (m *ClientMock) LPushX(key string, value interface{}) *redis.IntCmd {
+func (m *ClientMock) LPushX(key string, values ...interface{}) *redis.IntCmd {
 	if !m.hasStub("LPushX") {
-		return m.client.LPushX(key, value)
+		return m.client.LPushX(key, values)
 	}
 
-	return m.Called(key, value).Get(0).(*redis.IntCmd)
+	return m.Called(key, values).Get(0).(*redis.IntCmd)
 }
 
 func (m *ClientMock) LRange(key string, start, stop int64) *redis.StringSliceCmd {
@@ -650,12 +659,12 @@ func (m *ClientMock) RPush(key string, values ...interface{}) *redis.IntCmd {
 	return m.Called(key, values).Get(0).(*redis.IntCmd)
 }
 
-func (m *ClientMock) RPushX(key string, value interface{}) *redis.IntCmd {
+func (m *ClientMock) RPushX(key string, values ...interface{}) *redis.IntCmd {
 	if !m.hasStub("RPushX") {
-		return m.client.RPushX(key, value)
+		return m.client.RPushX(key, values)
 	}
 
-	return m.Called(key, value).Get(0).(*redis.IntCmd)
+	return m.Called(key, values).Get(0).(*redis.IntCmd)
 }
 
 func (m *ClientMock) PFAdd(key string, els ...interface{}) *redis.IntCmd {
